@@ -21,6 +21,13 @@ const instance = axios.create({
 
 Vue.prototype.$http = instance
 
+instance.interceptors.request.use(function (config){
+  console.log(config);
+  return config;
+},function (error){
+  return Promise.reject(error);
+})
+
 
 /* eslint-disable no-new */
 new Vue({
