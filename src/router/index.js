@@ -17,6 +17,7 @@ import registerView from '@/views/registerView.vue'
 import registerChoose from '@/views/registerComp/choose.vue'
 import registerCustomer from '@/views/registerComp/customer.vue'
 import registerSuccess from '@/views/registerComp/success.vue'
+import nannyView from '@/views/nannyView.vue'
 
 
 Vue.use(Router)
@@ -98,6 +99,10 @@ export default new Router({
           component:registerSuccess
         }
       ]
+    },
+    {
+      path:'/nannyView',
+      component:nannyView
     },
     {
       path:'/',

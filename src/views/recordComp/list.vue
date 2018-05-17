@@ -3,11 +3,13 @@
     <el-container>
 
       <el-aside width="300px" style="background-color: rgb(238, 241, 246);border: 5px solid #eee">
-        <el-select v-model="selectOption" placeholder="请选择">
+        <el-select v-model="selectOption" placeholder="请选择服务类型">
           <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
           </el-option>
         </el-select>
         <el-button icon="el-icon-search" circle></el-button>
+        <el-input v-model="selectMoney" placeholder="请输入薪酬"></el-input>
+        <el-input v-model="selectAddress" placeholder="请输入工作地点"></el-input>
       </el-aside>
       <el-container>
         <el-main>
@@ -61,12 +63,42 @@
           currentPage: 1 //查询页码
         },
         options: [{
-          value: '选项1',
-          label: '所有发布'
-        }, {
-          value: '选项2',
-          label: '我的发布'
-        }]
+            value: '家庭钟点',
+            label: '家庭钟点',
+          }, {
+            value: '病人陪护',
+            label: '病人陪护'
+          },
+          {
+            value: '钟点工',
+            label: '钟点工'
+          },
+          {
+            value: '家教辅导',
+            label: '家教辅导'
+          },
+          {
+            value: '营养指导',
+            label: '营养指导'
+          },
+          {
+            value: '育婴早教',
+            label: '育婴早教'
+          },
+          {
+            value: '母婴护理',
+            label: '母婴护理'
+          },
+          {
+            value: '产妇护理',
+            label: '产妇护理'
+          },
+          {
+            value: '家庭护理',
+            label: '家庭护理'
+          }],
+        selectMoney:'',//查询金额
+        selectAddress:'',//查询地址
       };
     },
     components: {},

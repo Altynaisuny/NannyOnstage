@@ -67,6 +67,11 @@
             trigger: "blur",
             message: '姓名不能为空'
           }],
+          password: [{
+            required: true,
+            trigger: "blur",
+            message: '密码不能为空'
+          }],
           sex: [{
             required: true,
             trigger: "blur",

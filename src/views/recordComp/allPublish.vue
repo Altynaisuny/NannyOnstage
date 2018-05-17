@@ -48,7 +48,7 @@
         <template slot-scope="scope">
           <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">打开</el-button>
           <el-button size="mini" type="danger" v-if="hasClose(scope.row)" @click="handlClose(scope.$index, scope.row)">结束</el-button>
-          <el-button size="mini" type="success" v-else @click="handlClose(scope.$index, scope.row)">已结束</el-button>
+          <el-button size="mini" type="success" v-else disabled>已结束</el-button>
         </template>
       </el-table-column>
     </el-table>

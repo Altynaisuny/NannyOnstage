@@ -4,7 +4,8 @@
       <el-col :span="15" :offset="3">
         <el-card class="box-card">
           <el-tag type="warning" v-if="recordInfo.nannyNo == null || recordInfo.nannyNo == ''">未选定</el-tag>
-          <el-tag type="danger" v-else>已选定</el-tag>
+          <el-tag type="danger" v-if="recordInfo.status == '1'">已选定</el-tag>
+          <el-tag type="info" v-if="recordInfo.status == '2'">已结束</el-tag>
           <div class="text item">
             创建时间：{{recordInfo.createTime}}
           </div>
@@ -44,6 +45,8 @@
               <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">查看</el-button>
               <el-button size="mini" type="success" v-if="isShowBtn2(scope.row)" @click="handleChoose(scope.$index, scope.row)">选定</el-button>
               <el-button size="mini" type="danger" v-if="isShowBtn(scope.row)" @click="cancelChose(scope.row)">取消选定</el-button>
+              <el-button size="mini" type="warning" v-if="isShowBtn3()" disabled>已结束</el-button>
+              <i class="el-icon-check" v-if="isShowBtn4(scope.row)"></i>
             </template>
           </el-table-column>
         </el-table>
@@ -65,7 +68,8 @@
           pay: '',
           type: '',
           workAddress: '',
-          nannyNo:''
+          nannyNo:'',
+          status:''
         },
       }
     },
@@ -77,6 +81,7 @@
           })
           .then(response => {
             var data = response.data;
+            console.log(data);
             this.tableData = data.list;
             this.recordInfo.createTime = data.recordInfo.createTime
             this.recordInfo.recordNo = data.recordInfo.recordNo
@@ -86,13 +91,14 @@
             this.recordInfo.type = data.recordInfo.type
             this.recordInfo.workAddress = data.recordInfo.workAddress
             this.recordInfo.nannyNo = data.recordInfo.nannyNo
+            this.recordInfo.status = data.recordInfo.status
           })
           .catch(error => {
             console.log(error);
           })
       },
       handleEdit(index, row) {
-        console.log(obj);
+        this.$router.push({path:'/nannyView', query:{nannyNo : row.nannyNo}});
       },
       handleChoose(index, row) {
         this.$http.post('/api/record/choseNanny', {
@@ -115,10 +121,14 @@
             console.log(error);
           })
       },
-      //取消选定按钮是否显示
+      //取消选定
       isShowBtn(row){
         //没有选定保姆
         if (null == this.recordInfo.nannyNo || "" == this.recordInfo.nannyNo){
+          return false;
+        }
+        //订单已经结束
+        if (this.recordInfo.status == '2'){
           return false;
         }
         //已选定了该保姆
@@ -127,12 +137,26 @@
         }
           return false;
       },
-      //选定按钮是否显示
+      //选定
       isShowBtn2(row){
         if (null == this.recordInfo.nannyNo || "" == this.recordInfo.nannyNo){
           return true;
         }
         return false;
+      },
+      //已锁定
+      isShowBtn3(){
+        if(this.recordInfo.status == '2'){
+            return true;
+        } else {
+          return false;
+        }
+      },
+      isShowBtn4(row){
+          if (row.nannyNo == this.recordInfo.nannyNo && this.recordInfo.nannyNo != '' && this.recordInfo.nannyNo != null){
+            return true;
+          }
+          return false;
       },
       cancelChose(row){
           this.$http.post('/api/record/cancelChose', {
