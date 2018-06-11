@@ -1,55 +1,75 @@
 <template>
   <el-container>
-     <headerBar/>
+    <headerBar/>
     <el-main>
       <el-carousel indicator-position="outside">
-    <el-carousel-item v-for="item in list" :key="item">
-      <h3>{{ item }}</h3>
-    </el-carousel-item>
-  </el-carousel>
+        <el-carousel-item v-for="(img,index) in imgList" :key="index">
+          <img v-bind:src="img.url"/>
+          <h3>hello</h3>
+        </el-carousel-item>
+      </el-carousel>
     </el-main>
     <el-footer>
 
     </el-footer>
   </el-container>
 </template>
-  
-<script>
 
-import headerBar from '../components/HeaderBar.vue'
+<script>
+  import headerBar from '../components/HeaderBar.vue'
+  import Waterfall from 'vue-waterfall/lib/waterfall'
+  import WaterfallSlot from 'vue-waterfall/lib/waterfall-slot'
 
   export default {
-  
+
     data() {
       return {
-       list:['1111','2222','3333','4444'],
+        
+        imgList:[
+          {
+            url:require('../assets/header-1.jpg')
+          },
+          {
+            url:require('../assets/header-2.png')
+          },
+          {
+            url:require('../assets/header-3.jpg')
+          }
+        ]
       };
     },
-    components:{headerBar},
+    components: {
+      headerBar,Waterfall,WaterfallSlot
+    },
     methods: {
-     
+      fetchData(){
+        this.$http
+          .post("/api/record/unclosed", {
+            
+          })
+          .then(response => {
+            console.log(response.data)
+           })
+          .catch(error => {
+            console.log(error);
+          });
+      }
+    },
+    mounted(){
+      this.fetchData();
     }
   };
 
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang = "less" scoped>
-.el-carousel__item h3 {
+<style lang="less" scoped>
+  .el-carousel__item h3 {
     color: #475669;
     font-size: 18px;
     opacity: 0.75;
     line-height: 300px;
     margin: 0;
-  }
-  
-  .el-carousel__item:nth-child(2n) {
-    background-color: #99a9bf;
-    /* background-image: url('./assets/header-1.jpg') */
-  }
-  
-  .el-carousel__item:nth-child(2n+1) {
-    background-color: #d3dce6;
   }
 
 </style>

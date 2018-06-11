@@ -3,13 +3,26 @@
     <el-container>
 
       <el-aside width="300px" style="background-color: rgb(238, 241, 246);border: 5px solid #eee">
-        <el-select v-model="selectOption" placeholder="请选择服务类型">
+        <div class="select-condition">
+          <el-select v-model="type" placeholder="请选择服务类型">
           <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
           </el-option>
         </el-select>
-        <el-button icon="el-icon-search" circle></el-button>
-        <el-input v-model="selectMoney" placeholder="请输入薪酬"></el-input>
-        <el-input v-model="selectAddress" placeholder="请输入工作地点"></el-input>
+        </div>
+         <div class="select-condition">
+            <el-input v-model="describe" placeholder="请输入关键词"></el-input>
+        </div>
+         <div class="select-condition">
+           <el-input v-model="pay" placeholder="请输入薪酬"></el-input>
+        </div>
+         <div class="select-condition">
+           <el-input v-model="workAddress" placeholder="请输入工作地点"></el-input>
+        </div>
+         <div class="select-condition">
+            <el-button icon="el-icon-search" circle @click="fetchData()"></el-button>
+        <el-button type="danger" circle @click="reset()">重置</el-button>
+        </div>
+
       </el-aside>
       <el-container>
         <el-main>
@@ -54,7 +67,7 @@
   export default {
     data() {
       return {
-        selectOption: '',
+        
         list: [],
         //分页配置
         pagination: {
@@ -97,8 +110,12 @@
             value: '家庭护理',
             label: '家庭护理'
           }],
-        selectMoney:'',//查询金额
-        selectAddress:'',//查询地址
+        pay:'',//查询薪酬
+        workAddress:'',//查询工作地点
+        //类型
+        type: '',
+        //关键词
+        describe:'',
       };
     },
     components: {},
@@ -116,7 +133,11 @@
         this.$http
           .post("/api/record/unclosed", {
             pageSize: this.pagination.pageSize,
-            currentPage: this.pagination.currentPage
+            currentPage: this.pagination.currentPage,
+            pay:this.pay,
+            workAddress:this.workAddress,
+            type:this.type,
+            describe : this.describe
           })
           .then(response => {
             var data = response.data;
@@ -129,6 +150,12 @@
       },
       detail(obj){
         this.$router.push({path:'/recordView/detail', query:{recordNo : obj.recordNo}});
+      },
+      reset(){
+        this.pay ='';
+        this.workAddress = '';
+        this.type = '';
+        this.describe = ''
       }
     }
   };
@@ -138,8 +165,7 @@
   .pagination {
     margin-top: 15px;
   }
-.record-item{
-}
+
   .clearfix:before,
   .clearfix:after {
     display: table;
@@ -166,5 +192,7 @@
     display: inline-block;
     background: url('/assets/money.svg') no-repeat 0px 0px;
   }
-
+  .select-condition{
+    height: 60px;
+  }
 </style>

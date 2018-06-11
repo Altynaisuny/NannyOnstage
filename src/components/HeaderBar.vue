@@ -8,9 +8,7 @@
         </el-col>
         <el-submenu index="2">
           <template slot="title">内容</template>
-          <el-menu-item index="2-1">信誉排行</el-menu-item>
           <el-menu-item index="2-2">从业经历</el-menu-item>
-          <el-menu-item index="2-3">投诉</el-menu-item>
         </el-submenu>
         <el-submenu index="4">
           <template slot="title">信息中心</template>

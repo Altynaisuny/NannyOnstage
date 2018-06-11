@@ -74,8 +74,8 @@
         <el-rate v-show="record.status == '1' " v-model="score" disabled show-score text-color="#ff9900" score-template="{value}">
         </el-rate>
         <!-- 评分系统只对发布了该订单的客户生效，查询recordNo 是不是匹配当前登录的用户 -->
-        <el-rate v-show="record.status == '0' " v-model="score" show-text text-color="#ff9900" :max="5">
-        </el-rate>
+        <!-- <el-rate v-show="record.status == '0' " v-model="score" show-text text-color="#ff9900" :max="5">
+        </el-rate> -->
       </el-col>
     </el-row>
     <el-row>
@@ -152,6 +152,10 @@
       },
       //发布
         publish(){
+          if (this.comment.length <5 || this.comment.trim == ''){
+            this.$message.error('评论字数不够！');
+            return;
+          }
           this.$http.post('/api/record/insertComment', {
             NO: this.user.NO,
             recordNo: this.record.recordNo,

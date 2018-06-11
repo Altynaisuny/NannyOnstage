@@ -10,14 +10,12 @@
               <el-form-item label="编号">
                 <el-input v-model="formInline.nannyNo" placeholder="保姆编号"></el-input>
               </el-form-item>
-              <el-form-item label="活动区域">
-                <el-select v-model="formInline.region" placeholder="活动区域">
-                  <el-option label="区域一" value="shanghai"></el-option>
-                  <el-option label="区域二" value="beijing"></el-option>
-                </el-select>
+             <el-form-item label="姓名">
+                <el-input v-model="formInline.nannyName" placeholder="保姆姓名"></el-input>
               </el-form-item>
               <el-form-item>
                 <el-button type="primary" @click="onSubmit">查询</el-button>
+                <el-button type="danger" @click="reset()">重置</el-button>
               </el-form-item>
             </el-form>
           </el-col>
@@ -29,7 +27,7 @@
             <el-breadcrumb separator="/">
               <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
               <el-breadcrumb-item :to="{path:'/recordView/all'}">发布历史</el-breadcrumb-item>
-              <el-breadcrumb-item>订单性情</el-breadcrumb-item>
+              <el-breadcrumb-item>订单详情</el-breadcrumb-item>
               <el-breadcrumb-item>查看保姆</el-breadcrumb-item>
             </el-breadcrumb>
           </div>
@@ -111,7 +109,8 @@
       return {
         formInline: {
           nannyNo: '',
-          region: ''
+          region: '',
+          nannyName:''
         },
         nannyInfo: {
           nannyNo: '',
@@ -137,10 +136,15 @@
     },
     methods: {
       onSubmit() {
-        console.log('submit!');
+        
+        this.detail();
       },
       fetchTableData() {
 
+      },
+      reset(){
+        this.formInline.nannyNo = '';
+        this.formInline.nannyName = ''
       },
       flip(val) {
         this.pagination.currentPage = val
@@ -149,6 +153,7 @@
       detail() {
         this.$http.post('/api/nanny/info', {
           nannyNo: this.formInline.nannyNo,
+          nannyName:this.formInline.nannyName,
           pageSize: this.pagination.pageSize,
           currentPage: this.pagination.currentPage
         }).then(response => {
